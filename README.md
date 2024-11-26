@@ -14,4 +14,11 @@ Download weights from the official pop2piano repository
 https://huggingface.co/sweetcocoa/pop2piano/blob/main/model-1999-val_0.67311615.ckpt
 Save above fiel in root director where app.py is stored
 
+## Note - Creating a Virtual Environment:
+- Create virtual env
+> python -m venv env
+- Activate virtual enviorment
+> source env/bin/activate - For macOS/Linux <br>
+>.\env\Scripts\activate - For Windows
+
 
