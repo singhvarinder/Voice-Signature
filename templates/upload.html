@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Call Simulator</title>
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='styles.css') }}">
+</head>
+<body>
+<div class="menu">
+    <a href="/">Call Simulator</a>
+    <a href="/upload">Upload Call Sample</a>
+    <a href="/register">Register Call (coming soon)</a>
+</div>
+    <h1>Record Customer audio sample</h1>
+    <form method="post" enctype="multipart/form-data">
+        <input type="file"  name="file" id="fileupload">
+        <label for="fileupload" class="custom-file-upload">
+        Upload Sample Call
+    </label>
+        <input type="submit" value="Upload" action="/uploadsimulatecall">
+    </form>
+</body>
+</html>

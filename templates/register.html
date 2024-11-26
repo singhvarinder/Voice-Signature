@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Register Caller</title>
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='styles.css') }}">
+</head>
+<body>
+<div class="menu">
+    <a href="/">Call Simulator</a>
+    <a href="/upload">Upload Call Sample</a>
+    <a href="/register">Register Call (coming soon)</a>
+</div>
+    <h1>Register Customer (coming soon)</h1>
+<p class="blinking uc">we are in process of creatilng UI for this page, but feel free to use our CLI utility to register customer</p>
+    <form method="post" enctype="multipart/form-data">
+        <input type="file"  name="file" id="fileupload" disabled>
+        <label for="fileupload" class="custom-file-upload">
+        Register
+    </label>
+        <input type="submit" value="Register" disabled>
+    </form>
+
+</body>
+</html>
