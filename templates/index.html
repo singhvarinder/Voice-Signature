@@ -17,11 +17,29 @@
         <li><a onclick="waiting()" href="{{ url_for('static', filename='play/' + file) }}">{{ file }}</a></li>
         {% endfor %}
     </ul>
+<ul>
+            <li>
+                <a onclick="waiting()" >Live Calling</a>
+                <input type="checkbox" id="chkrecord" name="chkrecord" value="1">
+                <label for="chkrecord"> Record </label>
+            </li>
+</ul>
     <p id="status" class="blinking"></p>
 <script>
     function waiting()
     {
         document.getElementById('status').innerText = 'Analysing ...';
+            const checkbox = document.getElementById('chkrecord');
+            const isChecked = checkbox.checked;
+
+            fetch('/record', {
+                method: 'POST',
+                headers: {'Content-Type': 'application/json'},
+                body: JSON.stringify({ checked: isChecked })
+            })
+            .then(response => response.json())
+            .then(data =>{ console.log(data);alert(data["result"])})
+            .catch(error => console.error('Error:', error));
     }
 </script>
 </body>

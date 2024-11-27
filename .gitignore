@@ -1,2 +1,6 @@
 /model-1999-val_0.67311615.ckpt
 /pytorch_model.bin
+/data/embed/Manu.npy
+/uploads/sample.flac
+/data/embed/Tester.npy
+/output.wav

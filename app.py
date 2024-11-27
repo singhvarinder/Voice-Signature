@@ -2,7 +2,7 @@
 from flask import Flask, render_template, request, redirect, url_for, jsonify
 import os
 import simpleaudio as sa
-import voice_auth
+import voice_auth, callrecord
 
 from pydub import AudioSegment
 from werkzeug.utils import secure_filename
@@ -18,13 +18,18 @@ def enroll():
     result = voice_auth.enroll(data['a'], data['b'])
     return jsonify({'result': result})
 
+def enrolluploaded(nm,fname):
+    data = request.json
+    result = voice_auth.enroll(nm,fname)
+    return jsonify({'result': result})
+
 @app.route('/recognize/<string:fname>', methods=['GET'])
 def recognize(fname):
     if not fname:
         return jsonify({"Error": "missing user data"})
     fname="./uploads/"+fname
     result = voice_auth.recognize(fname)
-    return jsonify({'Result ': "Hi '" + result + "', how I can help you"})
+    return jsonify({'result': "Hi '" + result + "', how I can help you"})
 
 
 def allowed_file(filename):
@@ -99,6 +104,19 @@ def play_audio(filename):
     play_obj = sa.play_buffer(audio.raw_data, num_channels=audio.channels, bytes_per_sample=audio.sample_width, sample_rate=audio.frame_rate)
     play_obj.wait_done() # Wait until playback is finished
     return  recognize(filename)
+
+
+@app.route('/record', methods=['POST'])
+def record():
+    data = request.json
+    is_checked = data.get('checked')
+    # return jsonify({'checked': is_checked})
+    if is_checked:
+        callrecord.recordcall()
+        return enrolluploaded("Tester","./uploads/sample.flac")
+    else:
+        callrecord.recordcall()
+        return  recognize("sample.flac")
 
 if __name__ == '__main__':
     app.run(port=5000, debug=True)

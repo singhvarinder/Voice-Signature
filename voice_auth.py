@@ -125,24 +125,25 @@ def recognize(file):
         enroll_embs = np.load(os.path.join(p.EMBED_LIST_FILE,emb))
         speaker = emb.replace(".npy","")
         distance = euclidean(test_embs, enroll_embs)
-        print("--------------distance------------------")
-        print(distance)
         distances.update({speaker:distance})
+
     minvalue= min(list(distances.values()))
     print("--------------minvalue------------------")
     print(minvalue)
     minvalue = int(str(minvalue)[0])
     print(minvalue)
-    print(minvalue > 1)
-    print("------------all distances--------------------")
+    print("------------score values for all stored voices--------------------")
     print(distances)
     print("--------------end------------------\n\n")
 
-    # if min(list(distances.values()))<p.THRESHOLD:
-    if minvalue > 1:
-        recogName=min(distances, key=distances.get)
-        print("Recognized: ",recogName)
-        return recogName
+    if min(list(distances.values()))<p.THRESHOLD:
+        recog_name=min(distances, key=distances.get)
+        if minvalue > 1:
+            print("Recognized: ",recog_name)
+        else:
+            recog_name= recog_name + "<ASSUMED>"
+            print("NotSure: ", recog_name)
+        return recog_name
     else:
         print("Could not identify the user, try enrolling again with a clear voice sample")
         print("Score: ",min(list(distances.values())))
