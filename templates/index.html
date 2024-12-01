@@ -14,13 +14,13 @@
     <h2>Customer call - Simulator</h2>
     <ul>
         {% for file in files %}
-        <li><a onclick="waiting()" href="{{ url_for('static', filename='play/' + file) }}">{{ file }}</a></li>
+        <li><a onclick="manRecognize(this)" href="{{ url_for('static', filename='play/' + file) }}">{{ file }}</a></li>
         {% endfor %}
     </ul>
 <ul>
-            <li>
-                <a onclick="waiting()" >Live Calling</a>
-                <input type="checkbox" id="chkrecord" name="chkrecord" value="1">
+            <li style="display: inline">
+                <a onclick="manRecord()" >Live Calling</a>
+                <input type="checkbox" id="chkrecord" name="chkrecord" value="0">
                 <label for="chkrecord"> Record </label>
             </li>
 </ul>
@@ -29,6 +29,12 @@
     function waiting()
     {
         document.getElementById('status').innerText = 'Analysing ...';
+    }
+
+    function manRecord()
+    {
+        document.getElementById('status').innerText = 'Analysing ...';
+        document.getElementById('status').style['animation']='blinkingText 1.2s infinite;'
             const checkbox = document.getElementById('chkrecord');
             const isChecked = checkbox.checked;
 
@@ -38,7 +44,35 @@
                 body: JSON.stringify({ checked: isChecked })
             })
             .then(response => response.json())
-            .then(data =>{ console.log(data);alert(data["result"])})
+            .then(data =>{
+                val1=data.result;
+                document.getElementById('status').style['animation']='none';
+                document.getElementById('status').style['color']='white';
+                document.getElementById('status').innerText = val1}
+            )
+            .catch(error => console.error('Error:', error));
+    }
+
+     function manRecognize(selflink)
+    {
+        document.getElementById('status').innerText = 'Analysing ...';
+        document.getElementById('status').style['animation']='blinkingText 1.2s infinite;'
+            var lnk=selflink.innerText;
+            const checkbox = document.getElementById('chkrecord');
+            const isChecked = checkbox.checked;
+
+            fetch('/recognize/'+lnk, {
+                method: 'GET',
+                // headers: {'Content-Type': 'application/json'},
+                // body: JSON.stringify({ checked: isChecked })
+            })
+            .then(response => response.json())
+            .then(data =>{
+                val1=data.result;
+                document.getElementById('status').style['animation']='none';
+                document.getElementById('status').style['color']='white';
+                document.getElementById('status').innerText = val1}
+            )
             .catch(error => console.error('Error:', error));
     }
 </script>

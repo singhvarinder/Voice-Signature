@@ -4,3 +4,9 @@
 /uploads/sample.flac
 /data/embed/Tester.npy
 /output.wav
+/__pycache__
+/__pycache__
+*.pyc
+*.npy
+/data
+/uploads

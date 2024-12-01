@@ -2,7 +2,8 @@
 from flask import Flask, render_template, request, redirect, url_for, jsonify
 import os
 import simpleaudio as sa
-import voice_auth, callrecord
+import voice_auth
+import callrecord
 
 from pydub import AudioSegment
 from werkzeug.utils import secure_filename
@@ -110,13 +111,17 @@ def play_audio(filename):
 def record():
     data = request.json
     is_checked = data.get('checked')
-    # return jsonify({'checked': is_checked})
+    callername="Viren"
+    print("Record CAlled with ischecked = "+str(is_checked))
+
     if is_checked:
-        callrecord.recordcall()
-        return enrolluploaded("Tester","./uploads/sample.flac")
+        print("Getting ready to Enroll")
+        callrecord.recordcall(callername)
+        return enrolluploaded(callername,"./uploads/"+callername+".flac")
     else:
-        callrecord.recordcall()
-        return  recognize("sample.flac")
+        print("Listining")
+        callrecord.recordcall(callername)
+        return recognize(callername+".flac")
 
 if __name__ == '__main__':
     app.run(port=5000, debug=True)

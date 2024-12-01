@@ -63,9 +63,11 @@ def enroll(name,file):
         speaker = name
     except ImportError as e1:
         print(f"Error processing the input audio file: {e1}")
+        return(f"Error processing the input audio file: {e1}")
     try:
         np.save(os.path.join(p.EMBED_LIST_FILE,speaker +".npy"), enroll_embs)
         print("Succesfully enrolled the user")
+        return("Succesfully enrolled the user")
     except ImportError as e2:
         print(f"Unable to save the user into the database: {e2}")
 
@@ -118,36 +120,42 @@ def recognize(file):
         
     distances = {}
     print("Processing test sample....")
-    print("Comparing test sample against enroll samples....")
-    test_result = get_embedding(model, file, p.MAX_SEC)
-    test_embs = np.array(test_result.tolist())
+    print("Generating test sample embedding....")
+    test_embedresult = get_embedding(model, file, p.MAX_SEC)
+    test_embs = np.array(test_embedresult.tolist())
+    print("Init comparing with stored data....")
     for emb in embeds:
         enroll_embs = np.load(os.path.join(p.EMBED_LIST_FILE,emb))
         speaker = emb.replace(".npy","")
         distance = euclidean(test_embs, enroll_embs)
         distances.update({speaker:distance})
-
+    # model.evaluate(test_embs, enroll_embs)
     minvalue= min(list(distances.values()))
     print("--------------minvalue------------------")
     print(minvalue)
     minvalue = int(str(minvalue)[0])
+    # minvalue = int(str(minvalue)[0:4])
     print(minvalue)
     print("------------score values for all stored voices--------------------")
     print(distances)
+
+    print("--------------score values for all stored")
     print("--------------end------------------\n\n")
+    # print(min(list(distances.values())))
+
+
+    # if minvalue < 0.9 or minvalue > 0.15 :
 
     if min(list(distances.values()))<p.THRESHOLD:
+    # if minvalue > 1:
         recog_name=min(distances, key=distances.get)
-        if minvalue > 1:
-            print("Recognized: ",recog_name)
-        else:
-            recog_name= recog_name + "<ASSUMED>"
-            print("NotSure: ", recog_name)
+        print("Recognized: ",recog_name)
         return recog_name
     else:
-        print("Could not identify the user, try enrolling again with a clear voice sample")
+        recog_name = 'Guest'
+        print("Recognized: ", recog_name)
         print("Score: ",min(list(distances.values())))
-        return("Could not identify the user, either is unregistred user or try enrolling again with a clear voice sample")
+        return recog_name
         exit()
         
 #Helper functions

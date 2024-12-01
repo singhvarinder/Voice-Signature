@@ -3,14 +3,14 @@ import wave
 import soundfile as sf
 
 
-def recordcall():
+def recordcall(callername):
     # Audio configuration
     lFORMAT = pyaudio.paInt16  # Audio format (16-bit)
     lCHANNELS = 1  # Number of channels (1 for mono, 2 for stereo)
     lRATE = 44100  # Sampling rate (44.1 kHz)
     lCHUNK = 1024  # Buffer size (number of samples per chunk)
     lRECORD_SECONDS = 5  # Duration to record in seconds
-    lOUTPUT_FILENAME = "uploads/sample.flac"  # Output filename
+    lOUTPUT_FILENAME = "uploads/"+callername + ".flac"  # Output filename
 
     # Initialize PyAudio
     laudio = pyaudio.PyAudio()
