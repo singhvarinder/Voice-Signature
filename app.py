@@ -123,24 +123,6 @@ def record(filename):
         callrecord.recordcall(callername)
         return recognize(callername+".flac")
 
-#
-#
-# @app.route('/record', methods=['POST'])
-# def record():
-#     data = request.json
-#     is_checked = data.get('checked')
-#     callername="TestUser"
-#     print("Record CAlled with ischecked = "+str(is_checked))
-#
-#     if is_checked:
-#         print("Getting ready to Enroll")
-#         callrecord.recordcall(callername)
-#         return enrolluploaded(callername,"./uploads/"+callername+".flac")
-#     else:
-#         print("Listining")
-#         callrecord.recordcall(callername)
-#         return recognize(callername+".flac")
-
 if __name__ == '__main__':
     app.run(port=5000, debug=True)
 
