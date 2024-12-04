@@ -107,11 +107,11 @@ def play_audio(filename):
     return  recognize(filename)
 
 
-@app.route('/record', methods=['POST'])
-def record():
+@app.route('/record/<filename>', methods=['POST'])
+def record(filename):
     data = request.json
     is_checked = data.get('checked')
-    callername="Viren"
+    callername=filename
     print("Record CAlled with ischecked = "+str(is_checked))
 
     if is_checked:
@@ -122,6 +122,24 @@ def record():
         print("Listining")
         callrecord.recordcall(callername)
         return recognize(callername+".flac")
+
+#
+#
+# @app.route('/record', methods=['POST'])
+# def record():
+#     data = request.json
+#     is_checked = data.get('checked')
+#     callername="TestUser"
+#     print("Record CAlled with ischecked = "+str(is_checked))
+#
+#     if is_checked:
+#         print("Getting ready to Enroll")
+#         callrecord.recordcall(callername)
+#         return enrolluploaded(callername,"./uploads/"+callername+".flac")
+#     else:
+#         print("Listining")
+#         callrecord.recordcall(callername)
+#         return recognize(callername+".flac")
 
 if __name__ == '__main__':
     app.run(port=5000, debug=True)

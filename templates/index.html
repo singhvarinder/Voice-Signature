@@ -20,8 +20,13 @@
 <ul>
             <li style="display: inline">
                 <a onclick="manRecord()" >Live Calling</a>
-                <input type="checkbox" id="chkrecord" name="chkrecord" value="0">
+                <input type="checkbox" onchange="manRecordSelected()" id="chkrecord" name="chkrecord" value="0">
                 <label for="chkrecord"> Record </label>
+                <div id="divuser" name="divuser" style="display: none;" >Enter User Name
+                <input type="text" id="txtUser" name="txtUser" value="TestUser">
+                </div>
+
+
             </li>
 </ul>
     <p id="status" class="blinking"></p>
@@ -31,14 +36,26 @@
         document.getElementById('status').innerText = 'Analysing ...';
     }
 
+    function manRecordSelected()
+    {
+          const checkbox = document.getElementById('chkrecord');
+            const isChecked = checkbox.checked;
+            if(isChecked)
+                 document.getElementById('divuser').style['display']='inline';
+            else
+                 document.getElementById('divuser').style['display']='none';
+    }
+
     function manRecord()
     {
         document.getElementById('status').innerText = 'Analysing ...';
         document.getElementById('status').style['animation']='blinkingText 1.2s infinite;'
             const checkbox = document.getElementById('chkrecord');
             const isChecked = checkbox.checked;
+            const txtuserid = document.getElementById('txtUser');
+            const txtuser = txtuserid.value;
 
-            fetch('/record', {
+            fetch('/record/'+txtuser, {
                 method: 'POST',
                 headers: {'Content-Type': 'application/json'},
                 body: JSON.stringify({ checked: isChecked })
